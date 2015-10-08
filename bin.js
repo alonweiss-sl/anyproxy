@@ -83,7 +83,7 @@ if(program.clear){
         })();
     }
 
-    new proxy.proxyServer({
+    var srv = new proxy.proxyServer({
         type                : program.type,
         port                : program.port,
         hostname            : program.host,
@@ -95,5 +95,10 @@ if(program.clear){
         setAsGlobalProxy    : program.global,
         interceptHttps      : program.intercept,
         silent              : program.silent
+    });
+
+    process.on('SIGINT', function () {
+        srv.close();
+        process.exit(0);
     });
 }
